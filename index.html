@@ -195,19 +195,17 @@
     .course-pill {
       background: #FFFFFF;
       border: 1px solid #E8E6E1;
-      border-radius: 10px;
-      padding: 14px 18px;
-      font-size: 0.8125rem;
-      font-weight: 500;
-      color: #0E0E0E;
+      border-radius: 12px;
+      padding: 16px;
       display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      align-items: flex-start;
+      gap: 14px;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
     }
     .course-pill:hover {
       border-color: #4F35F3;
-      box-shadow: 0 0 0 3px rgba(79,53,243,0.08);
+      box-shadow: 0 4px 20px rgba(79,53,243,0.06);
+      transform: translateY(-2px);
     }
 
     .avatar-ring {
@@ -767,13 +765,68 @@
 
     <div class="reveal">
       <p class="text-xs font-bold text-muted uppercase tracking-widest mb-5">Featured Coursework</p>
-      <div class="reveal-stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-        <div class="course-pill"><i data-lucide="atom" class="w-4 h-4 text-accent shrink-0"></i>Physics</div>
-        <div class="course-pill"><i data-lucide="cpu" class="w-4 h-4 text-accent shrink-0"></i>COA</div>
-        <div class="course-pill"><i data-lucide="code-xml" class="w-4 h-4 text-accent shrink-0"></i>OOPS</div>
-        <div class="course-pill"><i data-lucide="network" class="w-4 h-4 text-accent shrink-0"></i>DSA</div>
-        <div class="course-pill"><i data-lucide="hard-drive" class="w-4 h-4 text-accent shrink-0"></i>OS</div>
-        <div class="course-pill"><i data-lucide="sigma" class="w-4 h-4 text-accent shrink-0"></i>Discrete Maths</div>
+      <div class="reveal-stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        
+        <div class="course-pill">
+          <div class="w-9 h-9 rounded-lg bg-accentlt flex items-center justify-center shrink-0">
+            <i data-lucide="atom" class="w-4.5 h-4.5 text-accent"></i>
+          </div>
+          <div>
+            <div class="text-sm font-bold text-ink mb-1">Engineering Physics</div>
+            <div class="text-xs text-muted leading-relaxed">Mechanics, electromagnetism, and the foundational physics underlying computing.</div>
+          </div>
+        </div>
+
+        <div class="course-pill">
+          <div class="w-9 h-9 rounded-lg bg-accentlt flex items-center justify-center shrink-0">
+            <i data-lucide="cpu" class="w-4.5 h-4.5 text-accent"></i>
+          </div>
+          <div>
+            <div class="text-sm font-bold text-ink mb-1">Computer Architecture</div>
+            <div class="text-xs text-muted leading-relaxed">Instruction sets, memory hierarchies, and processor design principles.</div>
+          </div>
+        </div>
+
+        <div class="course-pill">
+          <div class="w-9 h-9 rounded-lg bg-accentlt flex items-center justify-center shrink-0">
+            <i data-lucide="code-xml" class="w-4.5 h-4.5 text-accent"></i>
+          </div>
+          <div>
+            <div class="text-sm font-bold text-ink mb-1">Object-Oriented Prog.</div>
+            <div class="text-xs text-muted leading-relaxed">Abstraction, polymorphism, and modular software design patterns.</div>
+          </div>
+        </div>
+
+        <div class="course-pill">
+          <div class="w-9 h-9 rounded-lg bg-accentlt flex items-center justify-center shrink-0">
+            <i data-lucide="network" class="w-4.5 h-4.5 text-accent"></i>
+          </div>
+          <div>
+            <div class="text-sm font-bold text-ink mb-1">Data Structures & Algo</div>
+            <div class="text-xs text-muted leading-relaxed">Algorithm analysis, graph theory, trees, and dynamic programming.</div>
+          </div>
+        </div>
+
+        <div class="course-pill">
+          <div class="w-9 h-9 rounded-lg bg-accentlt flex items-center justify-center shrink-0">
+            <i data-lucide="hard-drive" class="w-4.5 h-4.5 text-accent"></i>
+          </div>
+          <div>
+            <div class="text-sm font-bold text-ink mb-1">Operating Systems</div>
+            <div class="text-xs text-muted leading-relaxed">Concurrency, memory management, process scheduling, and file systems.</div>
+          </div>
+        </div>
+
+        <div class="course-pill">
+          <div class="w-9 h-9 rounded-lg bg-accentlt flex items-center justify-center shrink-0">
+            <i data-lucide="sigma" class="w-4.5 h-4.5 text-accent"></i>
+          </div>
+          <div>
+            <div class="text-sm font-bold text-ink mb-1">Discrete Mathematics & Linear Algebra</div>
+            <div class="text-xs text-muted leading-relaxed">Graph logic, combinatorics, matrix operations, and vector spaces.</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
