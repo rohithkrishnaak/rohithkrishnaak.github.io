@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rohith Krishna A K — CS @ VIT Vellore</title>
+  
+  <!-- Favicon (Inline SVG for instant loading) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22 font-family=%22serif%22 font-weight=%22bold%22 fill=%22%234F35F3%22>RK</text></svg>">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       FONTS — DM Serif Display (headings) + Plus Jakarta Sans (body)
+       ═══════════════════════════════════════════════════════════ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAILWIND CSS CDN
+       ═══════════════════════════════════════════════════════════ -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       LUCIDE ICONS CDN
+       ═══════════════════════════════════════════════════════════ -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       TAILWIND CONFIG — extend with custom tokens
+       ═══════════════════════════════════════════════════════════ -->
+  <script>
+    tailwind.config = {
+      // Prevents sticky hover states on mobile touchscreens
+      future: {
+        hoverOnlyWhenSupported: true,
+      },
+      theme: {
+        extend: {
+          fontFamily: {
+            serif:  ['"DM Serif Display"', 'Georgia', 'serif'],
+            sans:   ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            /* ── Palette ──────────────────────────────────────── */
+            canvas:  '#F9F8F6',   /* warm off-white page bg        */
+            surface: '#FFFFFF',   /* card/panel bg                 */
+            ink:     '#0E0E0E',   /* near-black text               */
+            muted:   '#6B7280',   /* secondary / label text        */
+            border:  '#E8E6E1',   /* subtle dividers               */
+            accent:  '#4F35F3',   /* Electric Indigo — primary CTAs */
+            accentlt:'#EEF0FF',   /* light tint of accent          */
+          },
+          boxShadow: {
+            card: '0 2px 24px 0 rgba(14,14,14,0.06)',
+            glow: '0 0 40px 0 rgba(79,53,243,0.14)',
+          },
+        }
+      }
+    }
+  </script>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       GLOBAL STYLES — things Tailwind can't easily express inline
+       ═══════════════════════════════════════════════════════════ -->
+  <style>
+    /* ── Base ───────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { background-color: #F9F8F6; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #F9F8F6;
+      color: #0E0E0E;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── Noise texture overlay for depth ───────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.5;
+    }
+
+    /* ── Glassmorphic Navbar ────────────────────────────────── */
+    #navbar {
+      background: rgba(249,248,246,0.78);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(232,230,225,0.6);
+      transition: all 0.3s ease;
+    }
+    #navbar.scrolled {
+      box-shadow: 0 4px 30px rgba(14,14,14,0.05);
+    }
+
+    /* ── Serif headings ─────────────────────────────────────── */
+    .heading-serif {
+      font-family: 'DM Serif Display', serif;
+      letter-spacing: -0.02em;
+    }
+
+    /* ── Scroll-reveal animation base ──────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.72s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.72s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* staggered children */
+    .reveal-stagger > * { opacity: 0; transform: translateY(24px); }
+    .reveal-stagger.visible > *:nth-child(1) { animation: fadeUp 0.6s 0.05s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .reveal-stagger.visible > *:nth-child(2) { animation: fadeUp 0.6s 0.15s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .reveal-stagger.visible > *:nth-child(3) { animation: fadeUp 0.6s 0.25s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .reveal-stagger.visible > *:nth-child(4) { animation: fadeUp 0.6s 0.35s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .reveal-stagger.visible > *:nth-child(5) { animation: fadeUp 0.6s 0.45s cubic-bezier(0.16,1,0.3,1) forwards; }
+    .reveal-stagger.visible > *:nth-child(6) { animation: fadeUp 0.6s 0.55s cubic-bezier(0.16,1,0.3,1) forwards; }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Hero entrance animations ───────────────────────────── */
+    @keyframes heroFadeIn {
+      from { opacity: 0; transform: translateY(32px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-line-1 { animation: heroFadeIn 0.9s 0.1s cubic-bezier(0.16,1,0.3,1) both; }
+    .hero-line-2 { animation: heroFadeIn 0.9s 0.25s cubic-bezier(0.16,1,0.3,1) both; }
+    .hero-line-3 { animation: heroFadeIn 0.9s 0.4s cubic-bezier(0.16,1,0.3,1) both; }
+    .hero-line-4 { animation: heroFadeIn 0.9s 0.55s cubic-bezier(0.16,1,0.3,1) both; }
+    .hero-line-5 { animation: heroFadeIn 0.9s 0.70s cubic-bezier(0.16,1,0.3,1) both; }
+
+    /* ── Accent underline on nav links ─────────────────────── */
+    .nav-link {
+      position: relative;
+      color: #6B7280;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: -3px;
+      width: 0; height: 2px;
+      background: #4F35F3;
+      border-radius: 2px;
+      transition: width 0.25s cubic-bezier(0.4,0,0.2,1);
+    }
+    .nav-link:hover { color: #0E0E0E; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ── Project cards ──────────────────────────────────────── */
+    .project-card {
+      background: #FFFFFF;
+      border: 1px solid #E8E6E1;
+      border-radius: 16px;
+      padding: 2rem;
+      transition: transform 0.3s cubic-bezier(0.16,1,0.3,1),
+                  box-shadow 0.3s cubic-bezier(0.16,1,0.3,1),
+                  border-color 0.3s;
+      cursor: default;
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(14,14,14,0.10);
+      border-color: #4F35F3;
+    }
+
+    /* ── Skill / tech badges ────────────────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: #FFFFFF;
+      border: 1px solid #E8E6E1;
+      border-radius: 100px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #0E0E0E;
+      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .badge:hover {
+      background: #4F35F3;
+      border-color: #4F35F3;
+      color: #FFFFFF;
+      transform: scale(1.05);
+    }
+    .badge.accent-badge {
+      background: #EEF0FF;
+      border-color: #C7BFFE;
+      color: #4F35F3;
+    }
+
+    /* ── Course grid pills ──────────────────────────────────── */
+    .course-pill {
+      background: #FFFFFF;
+      border: 1px solid #E8E6E1;
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: #0E0E0E;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .course-pill:hover {
+      border-color: #4F35F3;
+      box-shadow: 0 0 0 3px rgba(79,53,243,0.08);
+    }
+
+    /* ── Avatar ring ────────────────────────────────────────── */
+    .avatar-ring {
+      border-radius: 50%;
+      padding: 4px;
+      background: linear-gradient(135deg, #4F35F3, #A78BFA);
+      box-shadow: 0 8px 40px rgba(79,53,243,0.25);
+    }
+    .avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #E8E6E1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* ── Section label pill ─────────────────────────────────── */
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #EEF0FF;
+      border: 1px solid #C7BFFE;
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #4F35F3;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    /* ── Horizontal rule with gradient ─────────────────────── */
+    .hr-gradient {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #E8E6E1 30%, #E8E6E1 70%, transparent);
+      margin: 0;
+    }
+
+    /* ── CTA button ─────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #4F35F3;
+      color: #FFFFFF;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-primary:hover {
+      background: #3B22D8;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(79,53,243,0.3);
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: #4F35F3;
+      font-size: 0.875rem;
+      font-weight: 600;
+      padding: 11px 24px;
+      border-radius: 100px;
+      text-decoration: none;
+      border: 1.5px solid #4F35F3;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+    .btn-outline:hover {
+      background: #4F35F3;
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+
+    /* ── Mobile menu ────────────────────────────────────────── */
+    #mobile-menu {
+      background: rgba(249,248,246,0.96);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid #E8E6E1;
+      transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+    }
+    #mobile-menu.open {
+      max-height: 450px;
+      opacity: 1;
+    }
+
+    /* ── Footer social icons ────────────────────────────────── */
+    .social-icon {
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 10px;
+      border: 1px solid #E8E6E1;
+      background: #FFFFFF;
+      color: #6B7280;
+      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
+    }
+    .social-icon:hover {
+      background: #4F35F3;
+      border-color: #4F35F3;
+      color: #FFFFFF;
+      transform: translateY(-3px);
+    }
+
+    /* ── Cursor glow ─────────────────────────────────────────── */
+    #cursor-glow {
+      pointer-events: none;
+      position: fixed;
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(79,53,243,0.07) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: left 0.18s ease, top 0.18s ease;
+      z-index: 0;
+    }
+
+    /* ── Section spacing ────────────────────────────────────── */
+    .section { padding: 96px 0; }
+    @media (max-width: 768px) { .section { padding: 64px 0; } }
+
+    /* ── Scrollbar ──────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #C7BFFE; border-radius: 3px; }
+
+    /* ── Selection highlight ────────────────────────────────── */
+    ::selection { background: #C7BFFE; color: #0E0E0E; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CURSOR GLOW — follows mouse for ambient depth effect
+     ═══════════════════════════════════════════════════════════════ -->
+<div id="cursor-glow" aria-hidden="true"></div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     NAVBAR — glassmorphic, fixed
+     ═══════════════════════════════════════════════════════════════ -->
+<header id="navbar" class="fixed top-0 left-0 right-0 z-50">
+  <nav class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+
+    <!-- Logo / Name -->
+    <a href="#hero" class="heading-serif text-xl text-ink tracking-tight hover:text-accent transition-colors duration-200">
+      RK<span class="text-accent">.</span>
+    </a>
+
+    <!-- Desktop nav links -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#about"      class="nav-link">About</a>
+      <a href="#projects"   class="nav-link">Projects</a>
+      <a href="#skills"     class="nav-link">Skills</a>
+      <a href="#education"  class="nav-link">Education</a>
+      <a href="#experience" class="nav-link">Experience</a>
+      <a href="#contact"    class="nav-link">Contact</a>
+    </div>
+
+    <!-- Desktop CTA -->
+    <div class="hidden md:flex items-center gap-3">
+      <a href="/Rohith_Krishna_Resume.pdf" target="_blank" class="btn-outline text-xs px-4 py-2">
+        <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Resume
+      </a>
+    </div>
+
+    <!-- Hamburger (mobile) -->
+    <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2 -mr-2 group" aria-label="Open menu">
+      <span class="hamburger-line block w-5 h-0.5 bg-ink rounded-full transition-all duration-300 origin-center"></span>
+      <span class="hamburger-line block w-5 h-0.5 bg-ink rounded-full transition-all duration-300"></span>
+      <span class="hamburger-line block w-5 h-0.5 bg-ink rounded-full transition-all duration-300 origin-center"></span>
+    </button>
+  </nav>
+
+  <!-- Mobile dropdown -->
+  <div id="mobile-menu">
+    <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-1">
+      <a href="#about"      class="mobile-link py-3 text-sm font-medium text-muted hover:text-ink border-b border-border/50 transition-colors">About</a>
+      <a href="#projects"   class="mobile-link py-3 text-sm font-medium text-muted hover:text-ink border-b border-border/50 transition-colors">Projects</a>
+      <a href="#skills"     class="mobile-link py-3 text-sm font-medium text-muted hover:text-ink border-b border-border/50 transition-colors">Skills</a>
+      <a href="#education"  class="mobile-link py-3 text-sm font-medium text-muted hover:text-ink border-b border-border/50 transition-colors">Education</a>
+      <a href="#experience" class="mobile-link py-3 text-sm font-medium text-muted hover:text-ink border-b border-border/50 transition-colors">Experience</a>
+      <a href="#contact"    class="mobile-link py-3 text-sm font-medium text-muted hover:text-ink transition-colors">Contact</a>
+      <a href="/Rohith_Krishna_Resume.pdf" target="_blank" class="btn-primary mt-4 justify-center text-xs">
+        <i data-lucide="file-text" class="w-3.5 h-3.5"></i> Download Resume
+      </a>
+    </div>
+  </div>
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     HERO SECTION
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="hero" class="relative min-h-screen flex items-center pt-16 overflow-hidden">
+
+  <!-- Decorative background blob -->
+  <div class="absolute top-24 right-0 w-[500px] h-[500px] bg-accentlt rounded-full blur-3xl opacity-40 pointer-events-none" aria-hidden="true"></div>
+  <div class="absolute bottom-0 left-0 w-[300px] h-[300px] bg-accentlt rounded-full blur-3xl opacity-20 pointer-events-none" aria-hidden="true"></div>
+
+  <div class="max-w-6xl mx-auto px-6 w-full py-24 grid md:grid-cols-2 gap-16 items-center relative z-10">
+
+    <!-- Left: Text block -->
+    <div>
+      <!-- Eyebrow label -->
+      <div class="hero-line-1">
+        <span class="section-label">
+          <i data-lucide="map-pin" class="w-3 h-3"></i>
+          VIT Vellore, Tamil Nadu
+        </span>
+      </div>
+
+      <!-- Main heading -->
+      <h1 class="heading-serif text-5xl md:text-6xl lg:text-7xl text-ink leading-[1.08] mb-6 hero-line-2">
+        Rohith<br />Krishna<br /><em class="text-accent not-italic">A K.</em>
+      </h1>
+
+      <!-- Tagline -->
+      <p class="hero-line-3 text-muted text-base font-medium tracking-wide uppercase mb-6 text-sm">
+        B.Tech Computer Science · Class of 2029
+      </p>
+
+      <!-- Short intro paragraph -->
+      <p class="hero-line-4 text-ink/70 text-lg leading-relaxed max-w-md mb-10">
+        Building at the intersection of algorithms, AI, and systems. Fascinated by code that's both efficient and impactful.
+      </p>
+
+      <!-- CTAs -->
+      <div class="hero-line-5 flex flex-wrap gap-4">
+        <a href="#projects" class="btn-primary">
+          <i data-lucide="layers" class="w-4 h-4"></i> View Projects
+        </a>
+        <a href="#contact" class="btn-outline">
+          <i data-lucide="send" class="w-4 h-4"></i> Get in Touch
+        </a>
+      </div>
+    </div>
+
+    <!-- Right: Avatar + floating info cards -->
+    <div class="flex flex-col items-center gap-6 hero-line-3">
+
+      <!-- Avatar circle -->
+      <div class="avatar-ring w-52 h-52 md:w-64 md:h-64 mx-auto">
+        <div class="avatar-inner w-full h-full">
+          <!-- ✏️ EDIT: Replace the placeholder below with an <img> tag to your headshot
+               e.g. <img src="headshot.jpg" alt="Rohith Krishna" class="w-full h-full object-cover rounded-full" />  -->
+          <div class="w-full h-full flex flex-col items-center justify-center gap-2 bg-gradient-to-br from-accentlt to-white">
+            <i data-lucide="user" class="w-16 h-16 text-accent/50"></i>
+            <span class="text-xs text-muted font-medium">Add Headshot</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating stat chips -->
+      <div class="flex flex-col gap-3 w-full max-w-xs">
+        <div class="flex items-center gap-3 bg-white border border-border rounded-xl px-4 py-3 shadow-card">
+          <div class="w-8 h-8 rounded-lg bg-accentlt flex items-center justify-center shrink-0">
+            <i data-lucide="award" class="w-4 h-4 text-accent"></i>
+          </div>
+          <div>
+            <div class="text-xs text-muted font-medium">Current GPA</div>
+            <div class="text-sm font-bold text-ink">8.9 / 10.0 — Semester 1</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 bg-white border border-border rounded-xl px-4 py-3 shadow-card">
+          <div class="w-8 h-8 rounded-lg bg-accentlt flex items-center justify-center shrink-0">
+            <i data-lucide="cpu" class="w-4 h-4 text-accent"></i>
+          </div>
+          <div>
+            <div class="text-xs text-muted font-medium">Current Focus</div>
+            <div class="text-sm font-bold text-ink">AI/ML · Algorithms · Systems</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 bg-white border border-border rounded-xl px-4 py-3 shadow-card">
+          <div class="w-8 h-8 rounded-lg bg-accentlt flex items-center justify-center shrink-0">
+            <i data-lucide="bot" class="w-4 h-4 text-accent"></i>
+          </div>
+          <div>
+            <div class="text-xs text-muted font-medium">Club</div>
+            <div class="text-sm font-bold text-ink">RoboVITics · AI/ML Domain</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-muted animate-bounce" aria-hidden="true">
+    <i data-lucide="chevrons-down" class="w-5 h-5"></i>
+  </div>
+</section>
+
+
+<hr class="hr-gradient" />
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ABOUT SECTION
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="about" class="section relative overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <div class="reveal grid md:grid-cols-5 gap-12 md:gap-16 items-start">
+
+      <!-- Left label column -->
+      <div class="md:col-span-2">
+        <span class="section-label">
+          <i data-lucide="user-round" class="w-3 h-3"></i> About
+        </span>
+        <h2 class="heading-serif text-4xl md:text-5xl text-ink leading-tight mt-2 mb-6">
+          Driven by<br />curiosity,<br />built on<br /><em class="text-accent">rigor.</em>
+        </h2>
+        <div class="flex items-center gap-3">
+          <a href="https://github.com/rohithkrishnaak" target="_blank" class="social-icon">
+            <i data-lucide="github" class="w-4 h-4"></i>
+          </a>
+          <a href="https://linkedin.com/in/rohith-krishna-a-k-a02230386" target="_blank" class="social-icon">
+            <i data-lucide="linkedin" class="w-4 h-4"></i>
+          </a>
+          <a href="mailto:rohithkrishna.a2025@vitstudent.ac.in" class="social-icon">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Right text column -->
+      <div class="md:col-span-3 space-y-5">
+        <p class="text-ink/80 text-lg leading-relaxed">
+          I'm a Computer Science student at VIT Vellore (Class of 2029) with a deep-seated fascination for how code interacts with the physical world. From optimising algorithms to exploring the frontiers of AI/ML, I thrive on building systems that are as efficient as they are impactful.
+        </p>
+        <p class="text-ink/70 text-base leading-relaxed">
+          My journey in computing started with a simple question — <em class="text-ink">"why does this work?"</em> — and has since grown into a relentless pursuit of understanding systems at their core. I'm drawn to the elegance of a well-reasoned proof and the satisfaction of watching a model converge on an insight.
+        </p>
+        <p class="text-ink/70 text-base leading-relaxed">
+          Beyond the coursework, I'm an active core member of <strong class="text-ink font-semibold">RoboVITics'</strong> AI/ML domain — VIT's premier robotics club — where I collaborate with peers on research at the intersection of computer vision, deep learning, and real-world systems.
+        </p>
+        <p class="text-ink/70 text-base leading-relaxed">
+          Outside of academics, I enjoy exploring the mathematical frameworks of quantum mechanics, building time-series analysis tools to track stock market trends, and diving into the mechanics of automated legged robots. I'm always open to conversations about algorithmic research, hardware systems, or a good CS puzzle.
+        </p>
+
+        <!-- Key facts row -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4">
+          <div class="bg-white border border-border rounded-xl p-4 text-center">
+            <div class="heading-serif text-2xl text-accent">8.9</div>
+            <div class="text-xs text-muted font-medium mt-1">GPA (Sem 1)</div>
+          </div>
+          <div class="bg-white border border-border rounded-xl p-4 text-center">
+            <div class="heading-serif text-2xl text-accent">3+</div>
+            <div class="text-xs text-muted font-medium mt-1">Projects</div>
+          </div>
+          <div class="bg-white border border-border rounded-xl p-4 text-center">
+            <div class="heading-serif text-2xl text-accent">5+</div>
+            <div class="text-xs text-muted font-medium mt-1">Languages</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<hr class="hr-gradient" />
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PROJECTS SECTION
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="projects" class="section">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <!-- Section header -->
+    <div class="reveal mb-14">
+      <span class="section-label">
+        <i data-lucide="layers" class="w-3 h-3"></i> Projects
+      </span>
+      <h2 class="heading-serif text-4xl md:text-5xl text-ink leading-tight">
+        Things I've <em class="text-accent">built.</em>
+      </h2>
+    </div>
+
+    <!-- Project grid -->
+    <div class="reveal-stagger grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+      <!-- ─── Project 1: Thyroid Anomaly Detection ─────────── -->
+      <div class="project-card md:col-span-2 lg:col-span-1">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-10 h-10 rounded-xl bg-accentlt flex items-center justify-center">
+            <i data-lucide="scan-line" class="w-5 h-5 text-accent"></i>
+          </div>
+          <span class="text-xs text-muted font-medium bg-canvas px-3 py-1 rounded-full border border-border">Research · 2026–Present</span>
+        </div>
+        <h3 class="heading-serif text-xl text-ink mb-2">Thyroid Anomaly Detection</h3>
+        <p class="text-muted text-sm leading-relaxed mb-5">
+          A group research project developing an advanced diagnostic pipeline for thyroid ultrasound imagery, integrating deep mathematical fuzzy algorithms with established anomaly detection frameworks to enhance segmentation precision.
+        </p>
+        <!-- Tags -->
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="badge accent-badge">Python</span>
+          <span class="badge accent-badge">Computer Vision</span>
+          <span class="badge accent-badge">Deep Learning</span>
+          <span class="badge accent-badge">Research</span>
+        </div>
+        <!-- No public repo yet -->
+        <div class="flex items-center gap-2 text-xs text-muted font-medium">
+          <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+          Private research repository
+        </div>
+      </div>
+
+      <!-- ─── Project 2: Stock Predictor ───────────────────── -->
+      <div class="project-card">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-10 h-10 rounded-xl bg-accentlt flex items-center justify-center">
+            <i data-lucide="trending-up" class="w-5 h-5 text-accent"></i>
+          </div>
+          <span class="text-xs text-muted font-medium bg-canvas px-3 py-1 rounded-full border border-border">Academic · 2025</span>
+        </div>
+        <h3 class="heading-serif text-xl text-ink mb-2">Real-time Stock Predictor</h3>
+        <p class="text-muted text-sm leading-relaxed mb-5">
+          A Python-based time-series analysis tool that fetches live market data and visualises fundamental trends. Built during Semester 1 as an exploration of live data APIs and signal processing.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="badge accent-badge">Python</span>
+          <span class="badge accent-badge">Time-Series</span>
+          <span class="badge accent-badge">Data Viz</span>
+        </div>
+        <a href="https://github.com/rohithkrishnaak/realtime_stock_predictor" target="_blank" class="flex items-center gap-2 text-xs text-accent font-semibold hover:underline">
+          <i data-lucide="github" class="w-3.5 h-3.5"></i>
+          View on GitHub
+          <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+        </a>
+      </div>
+
+      <!-- ─── Project 3: FraudGuard ─────────────────────────── -->
+      <div class="project-card">
+        <div class="flex items-start justify-between mb-4">
+          <div class="w-10 h-10 rounded-xl bg-accentlt flex items-center justify-center">
+            <i data-lucide="shield-check" class="w-5 h-5 text-accent"></i>
+          </div>
+          <span class="text-xs text-muted font-medium bg-canvas px-3 py-1 rounded-full border border-border">Security · ML</span>
+        </div>
+        <h3 class="heading-serif text-xl text-ink mb-2">Fraud Guard</h3>
+        <p class="text-muted text-sm leading-relaxed mb-5">
+          An intelligent security framework designed to detect and flag suspicious activities through advanced data pattern recognition — leveraging anomaly detection on transactional datasets.
+        </p>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="badge accent-badge">Python</span>
+          <span class="badge accent-badge">ML</span>
+          <span class="badge accent-badge">Anomaly Detection</span>
+        </div>
+        <a href="https://github.com/rohithkrishnaak/Fraud_guard" target="_blank" class="flex items-center gap-2 text-xs text-accent font-semibold hover:underline">
+          <i data-lucide="github" class="w-3.5 h-3.5"></i>
+          View on GitHub
+          <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+        </a>
+      </div>
+
+    </div><!-- /grid -->
+  </div>
+</section>
+
+
+<hr class="hr-gradient" />
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     SKILLS SECTION
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="skills" class="section bg-white">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <div class="reveal mb-14">
+      <span class="section-label">
+        <i data-lucide="wrench" class="w-3 h-3"></i> Technical Arsenal
+      </span>
+      <h2 class="heading-serif text-4xl md:text-5xl text-ink leading-tight">
+        My <em class="text-accent">toolkit.</em>
+      </h2>
+    </div>
+
+    <div class="reveal space-y-10">
+
+      <!-- Proficient Languages -->
+      <div>
+        <p class="text-xs font-bold text-muted uppercase tracking-widest mb-4">Proficient</p>
+        <div class="flex flex-wrap gap-3">
+          <span class="badge"><i data-lucide="code-2" class="w-3.5 h-3.5 text-accent"></i>C</span>
+          <span class="badge"><i data-lucide="code-2" class="w-3.5 h-3.5 text-accent"></i>C++</span>
+          <span class="badge"><i data-lucide="code-2" class="w-3.5 h-3.5 text-accent"></i>Python</span>
+        </div>
+      </div>
+
+      <!-- Intermediate -->
+      <div>
+        <p class="text-xs font-bold text-muted uppercase tracking-widest mb-4">Intermediate</p>
+        <div class="flex flex-wrap gap-3">
+          <span class="badge"><i data-lucide="zap" class="w-3.5 h-3.5 text-accent"></i>Rust</span>
+          <span class="badge"><i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-accent"></i>R</span>
+        </div>
+      </div>
+
+      <!-- Tools & Platforms -->
+      <div>
+        <p class="text-xs font-bold text-muted uppercase tracking-widest mb-4">Tools &amp; Platforms</p>
+        <div class="flex flex-wrap gap-3">
+          <span class="badge"><i data-lucide="git-branch" class="w-3.5 h-3.5 text-accent"></i>Git</span>
+          <span class="badge"><i data-lucide="terminal" class="w-3.5 h-3.5 text-accent"></i>Linux Shell</span>
+          <span class="badge"><i data-lucide="notebook" class="w-3.5 h-3.5 text-accent"></i>Jupyter Lab</span>
+          <span class="badge"><i data-lucide="file-code-2" class="w-3.5 h-3.5 text-accent"></i>LaTeX</span>
+          <span class="badge"><i data-lucide="brain-circuit" class="w-3.5 h-3.5 text-accent"></i>Hugging Face</span>
+          <span class="badge"><i data-lucide="monitor" class="w-3.5 h-3.5 text-accent"></i>VS Code</span>
+        </div>
+      </div>
+
+      <!-- Currently Exploring -->
+      <div>
+        <p class="text-xs font-bold text-muted uppercase tracking-widest mb-4">Currently Exploring</p>
+        <div class="flex flex-wrap gap-3">
+          <span class="badge accent-badge"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i>Deep Learning</span>
+          <span class="badge accent-badge"><i data-lucide="eye" class="w-3.5 h-3.5"></i>Computer Vision</span>
+          <span class="badge accent-badge"><i data-lucide="network" class="w-3.5 h-3.5"></i>Systems Programming</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- NPTEL Certification -->
+    <div class="reveal mt-14 p-6 bg-accentlt border border-accentlt rounded-2xl flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <div class="w-12 h-12 rounded-xl bg-accent flex items-center justify-center shrink-0">
+        <i data-lucide="badge-check" class="w-6 h-6 text-white"></i>
+      </div>
+      <div class="flex-1">
+        <div class="text-xs font-bold text-accent uppercase tracking-widest mb-1">Certification · NPTEL (Swayam) · 2025</div>
+        <div class="text-ink font-semibold text-base">Programming, Data Structures &amp; Algorithms using Python</div>
+        <div class="text-muted text-sm mt-1">Rigorous course on algorithmic complexity, sorting, searching, and advanced Python data structures. Awarded <strong class="text-ink">Elite Certificate</strong>.</div>
+      </div>
+      <div class="shrink-0">
+        <span class="inline-flex items-center gap-2 bg-accent text-white text-xs font-bold px-4 py-2 rounded-full">
+          <i data-lucide="award" class="w-3.5 h-3.5"></i> Elite
+        </span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<hr class="hr-gradient" />
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     EDUCATION SECTION
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="education" class="section">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <div class="reveal mb-14">
+      <span class="section-label">
+        <i data-lucide="graduation-cap" class="w-3 h-3"></i> Education
+      </span>
+      <h2 class="heading-serif text-4xl md:text-5xl text-ink leading-tight">
+        Where I've <em class="text-accent">studied.</em>
+      </h2>
+    </div>
+
+    <!-- Education timeline card -->
+    <div class="reveal bg-white border border-border rounded-2xl p-8 shadow-card mb-12">
+      <div class="flex flex-col sm:flex-row sm:items-start gap-6">
+        <div class="w-12 h-12 rounded-xl bg-accentlt flex items-center justify-center shrink-0">
+          <i data-lucide="university" class="w-6 h-6 text-accent"></i>
+        </div>
+        <div class="flex-1">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-1">
+            <h3 class="heading-serif text-xl text-ink">Bachelor of Technology — Computer Science (Core)</h3>
+            <span class="text-xs font-bold text-accent bg-accentlt px-3 py-1 rounded-full border border-accentlt self-start">2025 – 2029</span>
+          </div>
+          <p class="text-muted text-sm font-medium mb-4">Vellore Institute of Technology (VIT), Vellore</p>
+          <div class="flex items-center gap-2 mb-4">
+            <span class="text-xs font-bold text-muted uppercase tracking-wider">GPA</span>
+            <span class="heading-serif text-2xl text-accent">8.9</span>
+            <span class="text-muted text-sm">/ 10.0 — Semester 1</span>
+          </div>
+          <p class="text-ink/70 text-sm">Focusing on core computational theory, advanced data structures, systems programming, and data analysis within a highly competitive Core CSE branch.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coursework grid -->
+    <div class="reveal">
+      <p class="text-xs font-bold text-muted uppercase tracking-widest mb-5">Featured Coursework</p>
+      <div class="reveal-stagger grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div class="course-pill"><i data-lucide="atom" class="w-4 h-4 text-accent shrink-0"></i>Engineering Physics</div>
+        <div class="course-pill"><i data-lucide="cpu" class="w-4 h-4 text-accent shrink-0"></i>Computer Organisation &amp; Architecture</div>
+        <div class="course-pill"><i data-lucide="code-xml" class="w-4 h-4 text-accent shrink-0"></i>Structured &amp; OO Programming</div>
+        <div class="course-pill"><i data-lucide="network" class="w-4 h-4 text-accent shrink-0"></i>Data Structures &amp; Algorithms</div>
+        <div class="course-pill"><i data-lucide="hard-drive" class="w-4 h-4 text-accent shrink-0"></i>Operating Systems</div>
+        <div class="course-pill"><i data-lucide="sigma" class="w-4 h-4 text-accent shrink-0"></i>Discrete Mathematics</div>
+        <div class="course-pill"><i data-lucide="calculator" class="w-4 h-4 text-accent shrink-0"></i>Calculus for Engineers</div>
+        <div class="course-pill"><i data-lucide="binary" class="w-4 h-4 text-accent shrink-0"></i>Digital Logic Design</div>
+        <div class="course-pill"><i data-lucide="brain" class="w-4 h-4 text-accent shrink-0"></i>Problem Solving &amp; Programming</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<hr class="hr-gradient" />
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     EXPERIENCE / CLUBS SECTION
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="experience" class="section bg-white">
+  <div class="max-w-6xl mx-auto px-6">
+
+    <div class="reveal mb-12">
+      <span class="section-label">
+        <i data-lucide="users" class="w-3 h-3"></i> Experience &amp; Clubs
+      </span>
+      <h2 class="heading-serif text-4xl md:text-5xl text-ink leading-tight">
+        Where I <em class="text-accent">contribute.</em>
+      </h2>
+    </div>
+
+    <div class="reveal">
+      <div class="bg-canvas border border-border rounded-2xl p-8 flex flex-col sm:flex-row gap-6 items-start">
+        <div class="w-12 h-12 rounded-xl bg-accentlt flex items-center justify-center shrink-0">
+          <i data-lucide="bot" class="w-6 h-6 text-accent"></i>
+        </div>
+        <div>
+          <div class="flex flex-wrap items-center gap-3 mb-1">
+            <h3 class="heading-serif text-xl text-ink">RoboVITics — AI/ML Domain</h3>
+            <span class="text-xs font-bold text-accent bg-accentlt px-3 py-1 rounded-full border border-accentlt">Core Member</span>
+          </div>
+          <p class="text-muted text-sm font-medium mb-3">VIT Vellore's Premier Robotics Club · 2025 – Present</p>
+          <p class="text-ink/70 text-sm leading-relaxed max-w-2xl">
+            Active core member of the AI/ML domain within RoboVITics. Collaborating on applied research projects, computer vision pipelines, and deep learning experiments alongside a multidisciplinary team of engineers. Contributing to the club's mission of bridging theoretical AI research with real-world robotic systems.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<hr class="hr-gradient" />
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     CONTACT / FOOTER SECTION
+     ═══════════════════════════════════════════════════════════════ -->
+<section id="contact" class="section relative overflow-hidden">
+
+  <!-- Decorative blob -->
+  <div class="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+    <div class="w-[600px] h-[400px] bg-accentlt rounded-full blur-3xl opacity-30"></div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 relative z-10">
+
+    <!-- Big CTA block -->
+    <div class="reveal text-center max-w-2xl mx-auto mb-20">
+      <span class="section-label mx-auto">
+        <i data-lucide="mail" class="w-3 h-3"></i> Get in Touch
+      </span>
+      <h2 class="heading-serif text-5xl md:text-6xl text-ink leading-tight mt-4 mb-6">
+        Let's <em class="text-accent">connect.</em>
+      </h2>
+      <p class="text-ink/70 text-lg leading-relaxed mb-10">
+        Open to research collaborations, internship opportunities, interesting side projects, or just a good conversation about computing. Don't hesitate to reach out.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="mailto:rohithkrishna.a2025@vitstudent.ac.in" class="btn-primary">
+          <i data-lucide="send" class="w-4 h-4"></i> Send an Email
+        </a>
+        <a href="/Rohith_Krishna_Resume.pdf" target="_blank" class="btn-outline">
+          <i data-lucide="file-down" class="w-4 h-4"></i> Download Resume
+        </a>
+      </div>
+    </div>
+
+    <!-- Footer bar -->
+    <div class="border-t border-border pt-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+
+      <!-- Branding -->
+      <div>
+        <span class="heading-serif text-xl text-ink">Rohith Krishna A K<span class="text-accent">.</span></span>
+        <p class="text-muted text-xs mt-1">B.Tech CS · VIT Vellore · Class of 2029</p>
+      </div>
+
+      <!-- Social icons -->
+      <div class="flex items-center gap-3">
+        <a href="https://github.com/rohithkrishnaak" target="_blank" aria-label="GitHub" class="social-icon">
+          <i data-lucide="github" class="w-4 h-4"></i>
+        </a>
+        <a href="https://linkedin.com/in/rohith-krishna-a-k-a02230386" target="_blank" aria-label="LinkedIn" class="social-icon">
+          <i data-lucide="linkedin" class="w-4 h-4"></i>
+        </a>
+        <a href="mailto:rohithkrishna.a2025@vitstudent.ac.in" aria-label="Email" class="social-icon">
+          <i data-lucide="mail" class="w-4 h-4"></i>
+        </a>
+        <!-- Resume / CV download -->
+        <a href="/Rohith_Krishna_Resume.pdf" target="_blank" aria-label="Download Resume" class="social-icon">
+          <i data-lucide="file-text" class="w-4 h-4"></i>
+        </a>
+      </div>
+
+      <!-- Copyright -->
+      <p class="text-muted text-xs">© 2025 Rohith Krishna A K</p>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+  /* ── 1. Initialize Lucide icons ───────────────────────────── */
+  lucide.createIcons();
+
+  /* ── 2. Navbar scroll shadow ──────────────────────────────── */
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 20);
+  }, { passive: true });
+
+  /* ── 3. Hamburger / Mobile Menu toggle ───────────────────── */
+  const hamburger  = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const lines      = hamburger.querySelectorAll('.hamburger-line');
+  let menuOpen = false;
+
+  hamburger.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    mobileMenu.classList.toggle('open', menuOpen);
+    // Animate lines into X
+    if (menuOpen) {
+      lines[0].style.transform = 'translateY(8px) rotate(45deg)';
+      lines[1].style.opacity   = '0';
+      lines[2].style.transform = 'translateY(-8px) rotate(-45deg)';
+    } else {
+      lines[0].style.transform = '';
+      lines[1].style.opacity   = '';
+      lines[2].style.transform = '';
+    }
+  });
+
+  // Close menu when a mobile link is clicked
+  document.querySelectorAll('.mobile-link').forEach(link => {
+    link.addEventListener('click', () => {
+      menuOpen = false;
+      mobileMenu.classList.remove('open');
+      lines[0].style.transform = '';
+      lines[1].style.opacity   = '';
+      lines[2].style.transform = '';
+    });
+  });
+
+  /* ── 4. Scroll-reveal via IntersectionObserver ───────────── */
+  const revealEls = document.querySelectorAll('.reveal, .reveal-stagger');
+
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        revealObserver.unobserve(entry.target); // fire once
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  revealEls.forEach(el => revealObserver.observe(el));
+
+  /* ── 5. Cursor glow follows mouse ────────────────────────── */
+  const glow = document.getElementById('cursor-glow');
+  window.addEventListener('mousemove', e => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top  = e.clientY + 'px';
+  }, { passive: true });
+
+  /* ── 6. Active nav link highlight on scroll ──────────────── */
+  const sections  = document.querySelectorAll('section[id]');
+  const navLinks  = document.querySelectorAll('a.nav-link');
+
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(link => {
+          const active = link.getAttribute('href') === `#${id}`;
+          link.style.color = active ? '#4F35F3' : '';
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => sectionObserver.observe(s));
+
+  /* ── 7. Smooth scroll for all anchor links ───────────────── */
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
